@@ -1,0 +1,3 @@
+load("@npm//uuid:index.bzl", "uuid")
+
+uuid(name = "uuid_bin")
