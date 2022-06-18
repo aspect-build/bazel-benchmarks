@@ -1,0 +1,78 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "aspect_rules_ts",
+    sha256 = "991a5ccad5fd276164ea64c01ae0b67820a5d514fbf37ae3f7ac8701a84b9f5a",
+    strip_prefix = "rules_ts-0.7.0",
+    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v0.7.0.tar.gz",
+)
+
+load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies")
+
+rules_ts_dependencies(ts_version_from = "//:package.json")
+
+# Fetch and register node, if you haven't already
+load("@rules_nodejs//nodejs:repositories.bzl", "DEFAULT_NODE_VERSION", "nodejs_register_toolchains")
+
+nodejs_register_toolchains(
+    name = "nodejs",
+    node_version = DEFAULT_NODE_VERSION,
+)
+
+http_archive(
+    name = "aspect_rules_swc",
+    # sha256 = "a484046ba2094284aa41c81f7e0fe4de8df7b21aacd3c5762fa442f80e11585b",
+    # HEAD of https://github.com/aspect-build/rules_swc/tree/swc_rust
+    strip_prefix = "rules_swc-4f82a9483777b9970a1d1246bec296c89a7d4141",
+    url = "https://github.com/aspect-build/rules_swc/archive/4f82a9483777b9970a1d1246bec296c89a7d4141.tar.gz",
+)
+
+load("@aspect_rules_swc//swc:dependencies.bzl", "rules_swc_dependencies")
+
+rules_swc_dependencies()
+
+load("@aspect_rules_swc//swc:repositories.bzl", "swc_register_toolchains")
+
+swc_register_toolchains(
+    name = "swc",
+    integrity_hashes = {
+        "darwin-arm64": "sha512-DuBBKIyk0iUGPmq6RQc7/uOCkGnvB0JDWQbWxA2NGAEcK0ZtI9J0efG9M1/gLIb0QD+d2DVS5Lx7VRIUFTx9lA==",
+        "darwin-x64": "sha512-WvDN6tRjQ/p+4gNvT4UVU4VyJLXy6hT4nT6mGgrtftG/9pP5dDPwwtTm86ISfqGUs8/LuZvrr4Nhwdr3j+0uAA==",
+    },
+    swc_version = "v1.2.204",
+)
+
+########################################################
+# Below only needed for legacy rules_nodejs comparison #
+
+http_archive(
+    name = "build_bazel_rules_nodejs",
+    sha256 = "0fad45a9bda7dc1990c47b002fd64f55041ea751fafc00cd34efb96107675778",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.5.0/rules_nodejs-5.5.0.tar.gz"],
+)
+
+http_archive(
+    name = "io_bazel_rules_webtesting",
+    sha256 = "e9abb7658b6a129740c0b3ef6f5a2370864e102a5ba5ffca2cea565829ed825a",
+    urls = ["https://github.com/bazelbuild/rules_webtesting/releases/download/0.3.5/rules_webtesting.tar.gz"],
+)
+
+load("@build_bazel_rules_nodejs//:repositories.bzl", "build_bazel_rules_nodejs_dependencies")
+
+build_bazel_rules_nodejs_dependencies()
+
+load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
+
+yarn_install(
+    name = "npm",
+    exports_directories_only = True,
+    package_json = "//:package.json",
+    yarn_lock = "//:yarn.lock",
+)
+
+yarn_install(
+    name = "npm_tslibrary",
+    exports_directories_only = False,
+    package_json = "//:package.json",
+    yarn_lock = "//:yarn.lock",
+)
