@@ -34,14 +34,17 @@ const featureNames = [
 class Generator {
     static STYLES = [
         'ts_project',
+        'ts_project_rbe',
         'ts_project_worker',
         'ts_project_sandboxed_worker',
         'ts_project_swc',
+        'ts_project_swc_rbe',
         'ts_project_worker_swc',
         'ts_project_sandboxed_worker_swc',
         'ts_project_rules_nodejs',
         'ts_project_rules_nodejs_swc',
         'ts_library',
+        'ts_library_rbe',
         'tsc',
     ]
 
@@ -139,6 +142,7 @@ ${this._ts_attributes()}
     _load() {
         switch (this.style) {
             case 'ts_project':
+            case 'ts_project_rbe':
             case 'ts_project_worker':
             case 'ts_project_sandboxed_worker':
                 return [
@@ -147,6 +151,7 @@ ${this._ts_attributes()}
                 ].join("\n")
 
             case 'ts_project_swc':
+            case 'ts_project_swc_rbe':
             case 'ts_project_worker_swc':
             case 'ts_project_sandboxed_worker_swc':
                 return [
@@ -168,6 +173,7 @@ ${this._ts_attributes()}
                 ].join("\n")
 
             case 'ts_library':
+            case 'ts_library_rbe':
                 return [
                     'load("@npm_tslibrary//@bazel/concatjs:index.bzl", ts_project = "ts_library")',
                     'load("@npm_tslibrary//@bazel/concatjs:index.bzl", js_library = "ts_library")',
@@ -202,9 +208,11 @@ ${this._ts_attributes()}
     _root_build(rootDeps) {
         switch (this.style) {
             case 'ts_project':
+            case 'ts_project_rbe':
             case 'ts_project_worker':
             case 'ts_project_sandboxed_worker':
             case 'ts_project_swc':
+            case 'ts_project_swc_rbe':
             case 'ts_project_worker_swc':
             case 'ts_project_sandboxed_worker_swc':
                 return `
@@ -230,6 +238,7 @@ ${rootDeps.map(d => `        \"${d}\",`).join("\n")}
             case 'ts_project_rules_nodejs':
             case 'ts_project_rules_nodejs_swc':
             case 'ts_library':
+            case 'ts_library_rbe':
                 return `
 # Generated BUILD file, see /generate.js
 ${this._load()}
@@ -253,6 +262,7 @@ ${rootDeps.map(d => `        \"${d}\",`).join("\n")}
         let attrs = []
         switch (this.style) {
             case 'ts_project':
+            case 'ts_project_rbe':
                 attrs.push(`    tsconfig = "//${this.outputDir}:tsconfig",`)
                 attrs.push('    declaration = True,')
                 attrs.push('    supports_workers = False,')
@@ -266,6 +276,7 @@ ${rootDeps.map(d => `        \"${d}\",`).join("\n")}
                 break;
 
             case 'ts_project_swc':
+            case 'ts_project_swc_rbe':
                 attrs.push(`    tsconfig = "//${this.outputDir}:tsconfig",`)
                 attrs.push('    declaration = True,')
                 attrs.push('    transpiler = swc_transpiler,')
@@ -292,6 +303,7 @@ ${rootDeps.map(d => `        \"${d}\",`).join("\n")}
                 break;
 
             case 'ts_library':
+            case 'ts_library_rbe':
                 attrs.push(`    tsconfig = "//${this.outputDir}:tsconfig.json",`)
                 break;
 
