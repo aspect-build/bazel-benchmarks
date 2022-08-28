@@ -1,5 +1,5 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@npm//uuid:package_json.bzl", "bin")
+load("@npm//:uuid/package_json.bzl", "bin")
 
 npm_link_all_packages(name = "node_modules")
 

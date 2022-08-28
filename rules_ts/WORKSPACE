@@ -2,9 +2,10 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "aspect_rules_ts",
-    sha256 = "991a5ccad5fd276164ea64c01ae0b67820a5d514fbf37ae3f7ac8701a84b9f5a",
-    strip_prefix = "rules_ts-0.7.0",
-    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v0.7.0.tar.gz",
+    # HEAD of main after 1.0.0-rc2
+    sha256 = "693540193507b5163c9ad3e460624edafe2016a3247e7ac04e09e08a4f563625",
+    strip_prefix = "rules_ts-d5842963bae0c1f0e83a77dabee595784418917b",
+    url = "https://github.com/aspect-build/rules_ts/archive/d5842963bae0c1f0e83a77dabee595784418917b.tar.gz",
 )
 
 load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies")
@@ -21,10 +22,10 @@ nodejs_register_toolchains(
 
 http_archive(
     name = "aspect_rules_swc",
-    # sha256 = "a484046ba2094284aa41c81f7e0fe4de8df7b21aacd3c5762fa442f80e11585b",
-    # HEAD of https://github.com/aspect-build/rules_swc/tree/swc_rust
-    strip_prefix = "rules_swc-4f82a9483777b9970a1d1246bec296c89a7d4141",
-    url = "https://github.com/aspect-build/rules_swc/archive/4f82a9483777b9970a1d1246bec296c89a7d4141.tar.gz",
+    # HEAD of https://github.com/aspect-build/rules_swc/tree/swc_rust_2
+    sha256 = "1d3cfb38426728c5464c15b9d393ff1bf114a1b2a25091f261758252a770eaad",
+    strip_prefix = "rules_swc-acc8fc27903ecb49a44725813be7c2e2d21e660a",
+    url = "https://github.com/aspect-build/rules_swc/archive/acc8fc27903ecb49a44725813be7c2e2d21e660a.tar.gz",
 )
 
 load("@aspect_rules_swc//swc:dependencies.bzl", "rules_swc_dependencies")

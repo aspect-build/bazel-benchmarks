@@ -141,18 +141,25 @@ ${this._ts_attributes()}
             case 'ts_project':
             case 'ts_project_worker':
             case 'ts_project_sandboxed_worker':
-                return 'load("@aspect_rules_ts//ts:defs.bzl", "ts_project")'
+                return [
+                    'load("@aspect_rules_ts//ts:defs.bzl", "ts_project")',
+                    'load("@aspect_rules_js//js:defs.bzl", "js_library")',
+                ].join("\n")
 
             case 'ts_project_swc':
             case 'ts_project_worker_swc':
             case 'ts_project_sandboxed_worker_swc':
                 return [
                     'load("@aspect_rules_ts//ts:defs.bzl", "ts_project")',
+                    'load("@aspect_rules_js//js:defs.bzl", "js_library")',
                     'load("@aspect_rules_swc//swc:defs.bzl", "swc_transpiler")',
                 ].join("\n")
 
             case 'ts_project_rules_nodejs':
-                return 'load("@npm//@bazel/typescript:index.bzl", "ts_project")'
+                return [
+                    'load("@npm//@bazel/typescript:index.bzl", "ts_project")',
+                    'load("@npm//@bazel/typescript:index.bzl", js_library = "ts_project")',
+                ].join("\n")
 
             case 'ts_project_rules_nodejs_swc':
                 return [
@@ -161,7 +168,11 @@ ${this._ts_attributes()}
                 ].join("\n")
 
             case 'ts_library':
-                return 'load("@npm_tslibrary//@bazel/concatjs:index.bzl", ts_project = "ts_library")'
+                return [
+                    'load("@npm_tslibrary//@bazel/concatjs:index.bzl", ts_project = "ts_library")',
+                    'load("@npm_tslibrary//@bazel/concatjs:index.bzl", js_library = "ts_library")',
+                    'load("@aspect_rules_swc//swc:defs.bzl", "swc_transpiler")',
+                ].join("\n")
 
             default:
                 console.error("Unhandled style")
@@ -208,7 +219,7 @@ copy_to_bin(
     srcs = ["tsconfig.json"],
 )
 
-ts_project(
+js_library(
     name = "devserver",
     deps = [
 ${rootDeps.map(d => `        \"${d}\",`).join("\n")}
