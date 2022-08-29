@@ -43,6 +43,25 @@ swc_register_toolchains(
     swc_version = "v1.2.244",
 )
 
+http_archive(
+    name = "aspect_rules_esbuild",
+    # HEAD of https://github.com/dzbarsky/rules_esbuild/tree/esbuild_transpiler
+    sha256 = "24f49ec473c9a96e8efef0f211642579ebc790e4e21cd6a5818ae4bfc610deb0",
+    strip_prefix = "rules_esbuild-e23be685e07a78ef14dd744ac844193dec09bd2c",
+    url = "https://github.com/aspect-build/rules_esbuild/archive/e23be685e07a78ef14dd744ac844193dec09bd2c.tar.gz",
+)
+
+load("@aspect_rules_esbuild//esbuild:dependencies.bzl", "rules_esbuild_dependencies")
+
+rules_esbuild_dependencies()
+
+load("@aspect_rules_esbuild//esbuild:repositories.bzl", "LATEST_VERSION", "esbuild_register_toolchains")
+
+esbuild_register_toolchains(
+    name = "esbuild",
+    esbuild_version = LATEST_VERSION,
+)
+
 ########################################################
 # Below only needed for legacy rules_nodejs comparison #
 

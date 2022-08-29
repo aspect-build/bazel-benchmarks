@@ -41,6 +41,7 @@ class Generator {
         'ts_project_swc_rbe',
         'ts_project_worker_swc',
         'ts_project_sandboxed_worker_swc',
+        'ts_project_esbuild',
         'ts_project_rules_nodejs',
         'ts_project_rules_nodejs_swc',
         'ts_library',
@@ -160,6 +161,12 @@ ${this._ts_attributes()}
                     'load("@aspect_rules_swc//swc:defs.bzl", "swc_transpiler")',
                 ].join("\n")
 
+            case 'ts_project_esbuild':
+                return [
+                    'load("@aspect_rules_ts//ts:defs.bzl", "ts_project")',
+                    'load("@aspect_rules_js//js:defs.bzl", "js_library")',
+                    'load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild_transpiler")',
+                ].join("\n")
             case 'ts_project_rules_nodejs':
                 return [
                     'load("@npm//@bazel/typescript:index.bzl", "ts_project")',
@@ -215,6 +222,7 @@ ${this._ts_attributes()}
             case 'ts_project_swc_rbe':
             case 'ts_project_worker_swc':
             case 'ts_project_sandboxed_worker_swc':
+            case 'ts_project_esbuild':
                 return `
 # Generated BUILD file, see /generate.js
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
@@ -289,6 +297,13 @@ ${rootDeps.map(d => `        \"${d}\",`).join("\n")}
                 attrs.push('    declaration = True,')
                 attrs.push('    transpiler = swc_transpiler,')
                 attrs.push('    supports_workers = True,')
+                break;
+
+            case 'ts_project_esbuild':
+                attrs.push(`    tsconfig = "//${this.outputDir}:tsconfig",`)
+                attrs.push('    declaration = True,')
+                attrs.push('    transpiler = esbuild_transpiler,')
+                attrs.push('    supports_workers = False,')
                 break;
 
             case 'ts_project_rules_nodejs':

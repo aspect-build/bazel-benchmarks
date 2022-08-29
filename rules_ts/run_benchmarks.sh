@@ -13,6 +13,7 @@ styles=(
     'ts_project_swc_rbe'
     'ts_project_worker_swc'
     'ts_project_sandboxed_worker_swc'
+    'ts_project_esbuild'
     'ts_project_rules_nodejs'
     'ts_project_rules_nodejs_swc'
     'ts_library'
