@@ -23,9 +23,9 @@ nodejs_register_toolchains(
 http_archive(
     name = "aspect_rules_swc",
     # HEAD of https://github.com/aspect-build/rules_swc/tree/swc_rust_2
-    sha256 = "1d3cfb38426728c5464c15b9d393ff1bf114a1b2a25091f261758252a770eaad",
-    strip_prefix = "rules_swc-acc8fc27903ecb49a44725813be7c2e2d21e660a",
-    url = "https://github.com/aspect-build/rules_swc/archive/acc8fc27903ecb49a44725813be7c2e2d21e660a.tar.gz",
+    sha256 = "74f49c7cd25ce62b1c09681723cec5577fd07bac4790bc65474d32d53de4e843",
+    strip_prefix = "rules_swc-d94c52f017a87c958dc431ebaac10cc034a816f5",
+    url = "https://github.com/aspect-build/rules_swc/archive/d94c52f017a87c958dc431ebaac10cc034a816f5.tar.gz",
 )
 
 load("@aspect_rules_swc//swc:dependencies.bzl", "rules_swc_dependencies")
@@ -40,7 +40,7 @@ swc_register_toolchains(
         "darwin-arm64": "sha512-DuBBKIyk0iUGPmq6RQc7/uOCkGnvB0JDWQbWxA2NGAEcK0ZtI9J0efG9M1/gLIb0QD+d2DVS5Lx7VRIUFTx9lA==",
         "darwin-x64": "sha512-WvDN6tRjQ/p+4gNvT4UVU4VyJLXy6hT4nT6mGgrtftG/9pP5dDPwwtTm86ISfqGUs8/LuZvrr4Nhwdr3j+0uAA==",
     },
-    swc_version = "v1.2.204",
+    swc_version = "v1.2.244",
 )
 
 ########################################################

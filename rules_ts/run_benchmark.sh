@@ -43,6 +43,10 @@ else
   bazel_flags+=( --noworker_sandboxing )
 fi
 
+if [[ "$style" == *"rbe"* ]]; then
+  bazel_flags+=( --config=rbe )
+fi
+
 pushd "$style"
 if [ "$style" == "tsc" ]; then
   yarn install

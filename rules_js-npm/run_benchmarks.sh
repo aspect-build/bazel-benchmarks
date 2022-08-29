@@ -63,3 +63,9 @@ source ./benchmark_4.sh
 git checkout npm_install/package.json
 git checkout npm_translate_lock/package.json
 git checkout yarn_install/package.json
+
+# sort the results
+cat "$results_file" | sort > "$results_file"
+
+echo "========================================"
+cat "$results_file"
