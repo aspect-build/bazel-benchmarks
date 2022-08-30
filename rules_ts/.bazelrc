@@ -1,3 +1,5 @@
+build --worker_max_instances=8
+
 # In general, the rules in this repository assume that runfiles
 # are enabled as we do not support no runfiles case.
 #
@@ -58,3 +60,6 @@ build:rbe --modify_execution_info=GoCompilePkg=+no-remote-exec
 # For local development with RBE, you should override these in your ~/.bazelrc
 build:rbe --tls_client_certificate=engflow.crt
 build:rbe --tls_client_key=engflow.key
+
+# GitActions workers have only 2 CPUs; limit workers to conserve memory
+build:ci --worker_max_instances=2
