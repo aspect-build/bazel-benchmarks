@@ -50,21 +50,21 @@ fi
 pushd "$style"
 if [ "$style" == "tsc" ]; then
   yarn install
-  measure "$results_file" "${style}_clean_build" ../node_modules/.bin/tsc --build --verbose --incremental
+  measure "$results_file" "${style}__clean_build" ../node_modules/.bin/tsc --build --verbose --incremental
   echo 'console.log()' >> "billing/lib0/cmp0/cmp0.component.ts"
-  measure "$results_file" "${style}_incremental_build" ../node_modules/.bin/tsc --build --verbose --incremental
+  measure "$results_file" "${style}__incremental_build" ../node_modules/.bin/tsc --build --verbose --incremental
 else
   bazel fetch ...
   bazel clean
-  measure "$results_file" "${style}_clean_build" bazel build "${bazel_flags[@]}" ...
+  measure "$results_file" "${style}__clean_build" bazel build "${bazel_flags[@]}" ...
   echo 'console.log()' >> "billing/lib0/cmp0/cmp0.component.ts"
-  measure "$results_file" "${style}_incremental_build" bazel build "${bazel_flags[@]}" ...
+  measure "$results_file" "${style}__incremental_build" bazel build "${bazel_flags[@]}" ...
   bazel clean
-  measure "$results_file" "${style}_transpile" bazel build "${bazel_flags[@]}" :devserver
+  measure "$results_file" "${style}__transpile" bazel build "${bazel_flags[@]}" :devserver
   echo 'console.log()' >> "billing/lib0/cmp0/cmp0.component.ts"
-  measure "$results_file" "${style}_incremental_transpile" bazel build "${bazel_flags[@]}" :devserver
-  measure "$results_file" "${style}_typecheck" bazel build "${bazel_flags[@]}" ...
+  measure "$results_file" "${style}__incremental_transpile" bazel build "${bazel_flags[@]}" :devserver
+  measure "$results_file" "${style}__typecheck" bazel build "${bazel_flags[@]}" ...
   echo 'console.log()' >> "billing/lib0/cmp0/cmp0.component.ts"
-  measure "$results_file" "${style}_incremental_typecheck" bazel build "${bazel_flags[@]}" ...
+  measure "$results_file" "${style}__incremental_typecheck" bazel build "${bazel_flags[@]}" ...
 fi
 popd
