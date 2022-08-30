@@ -14,3 +14,4 @@ ts_project_rules_nodejs_swc
 ts_library
 ts_library_rbe
 tsc
+profile__*.gz

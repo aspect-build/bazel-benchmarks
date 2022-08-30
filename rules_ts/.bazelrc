@@ -1,5 +1,7 @@
 build --announce_rc
 
+build --worker_max_instances=8
+
 # In general, the rules in this repository assume that runfiles
 # are enabled as we do not support no runfiles case.
 #
@@ -43,7 +45,7 @@ build --grpc_keepalive_time=30s
 build:rbe --extra_execution_platforms=@aspect_rules_js//platforms:x86_64_linux_remote
 build:rbe --genrule_strategy=remote
 build:rbe --host_platform=@aspect_rules_js//platforms:x86_64_linux_remote
-build:rbe --jobs=32
+build:rbe --jobs=100
 
 # EngFlow remote cache
 build:rbe --bes_backend=grpcs://tourmaline.cluster.engflow.com
@@ -62,10 +64,6 @@ build:rbe --tls_client_certificate=engflow.crt
 build:rbe --tls_client_key=engflow.key
 
 # Default GitHub actions linux runner
+build:ci --worker_max_instances=2
 build:ci --local_cpu_resources=2
 build:ci --local_ram_resources=7168
-
-# Limit the number of jobs locally to match the number of CPUs on CI so we get a similar
-# local CPU to remote exec ratio. We'll bump this once the remote execution cluster is larger.
-build --jobs=2
-build --worker_max_instances=2

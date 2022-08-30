@@ -47,9 +47,9 @@ if [[ "$style" == *"rbe"* ]]; then
   bazel_flags+=( --config=rbe )
 fi
 
-# if [[ "${CI:-}" ]]; then
-#   bazel_flags+=( --config=ci )
-# fi
+if [[ "${CI:-}" ]]; then
+  bazel_flags+=( --config=ci )
+fi
 
 pushd "$style"
 if [ "$style" == "tsc" ]; then
@@ -60,15 +60,15 @@ if [ "$style" == "tsc" ]; then
 else
   bazel fetch ...
   bazel clean
-  measure "$results_file" "${style}__clean_build" bazel build "${bazel_flags[@]}" ...
+  measure "$results_file" "${style}__clean_build" bazel build "${bazel_flags[@]}" ... --profile=profile__${style}__clean_build.gz
   echo 'console.log()' >> "billing/lib0/cmp0/cmp0.component.ts"
-  measure "$results_file" "${style}__incremental_build" bazel build "${bazel_flags[@]}" ...
+  measure "$results_file" "${style}__incremental_build" bazel build "${bazel_flags[@]}" ... --profile=profile__${style}__incremental_build.gz
   bazel clean
-  measure "$results_file" "${style}__transpile" bazel build "${bazel_flags[@]}" :devserver
+  measure "$results_file" "${style}__transpile" bazel build "${bazel_flags[@]}" :devserver --profile=profile__${style}__transpile.gz
   echo 'console.log()' >> "billing/lib0/cmp0/cmp0.component.ts"
-  measure "$results_file" "${style}__incremental_transpile" bazel build "${bazel_flags[@]}" :devserver
-  measure "$results_file" "${style}__typecheck" bazel build "${bazel_flags[@]}" ...
+  measure "$results_file" "${style}__incremental_transpile" bazel build "${bazel_flags[@]}" :devserver --profile=profile__${style}__incremental_transpile.gz
+  measure "$results_file" "${style}__typecheck" bazel build "${bazel_flags[@]}" ... --profile=profile__${style}__typecheck.gz
   echo 'console.log()' >> "billing/lib0/cmp0/cmp0.component.ts"
-  measure "$results_file" "${style}__incremental_typecheck" bazel build "${bazel_flags[@]}" ...
+  measure "$results_file" "${style}__incremental_typecheck" bazel build "${bazel_flags[@]}" ... --profile=profile__${style}__incremental_typecheck.gz
 fi
 popd
