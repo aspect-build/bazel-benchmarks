@@ -1,4 +1,4 @@
-build --worker_max_instances=8
+build --announce_rc
 
 # In general, the rules in this repository assume that runfiles
 # are enabled as we do not support no runfiles case.
@@ -61,5 +61,11 @@ build:rbe --modify_execution_info=GoCompilePkg=+no-remote-exec
 build:rbe --tls_client_certificate=engflow.crt
 build:rbe --tls_client_key=engflow.key
 
-# GitActions workers have only 2 CPUs; limit workers to conserve memory
-build:ci --worker_max_instances=2
+# Default GitHub actions linux runner
+build:ci --local_cpu_resources=2
+build:ci --local_ram_resources=7168
+
+# Limit the number of jobs locally to match the number of CPUs on CI so we get a similar
+# local CPU to remote exec ratio. We'll bump this once the remote execution cluster is larger.
+build --jobs=2
+build --worker_max_instances=2

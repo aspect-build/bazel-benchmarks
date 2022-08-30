@@ -47,9 +47,9 @@ if [[ "$style" == *"rbe"* ]]; then
   bazel_flags+=( --config=rbe )
 fi
 
-if [[ "${CI:-}" ]]; then
-  bazel_flags+=( --config=ci )
-fi
+# if [[ "${CI:-}" ]]; then
+#   bazel_flags+=( --config=ci )
+# fi
 
 pushd "$style"
 if [ "$style" == "tsc" ]; then

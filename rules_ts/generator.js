@@ -88,13 +88,13 @@ class Generator {
                 let vars = range1k.map(f => `export const a${f}: number = ${f}`).join('\n')
                 let sum = 'export const a = ' + range1k.map(f => `a${f}`).join('+')
                 // Include a cache busting timestamp in the .ts file
-                write(`${this.outputDir}/${name}/lib${modIdx}/${fileName}`, `// Generated source file (${Date.now()})\n${vars}\n${sum}\n`)
+                write(`${this.outputDir}/${name}/lib${modIdx}/${fileName}`, `// Generated source file (${this.style}-${Date.now()})\n${vars}\n${sum}\n`)
                 tsFileAcc.push(fileName);
                 this.cmpIdx++;
             }
 
             // Include a cache busting timestamp in the .ts file
-            write(`${this.outputDir}/${name}/lib${modIdx}/index.ts`, `// Generated source file (${Date.now()})\n` + tsFileAcc.map(
+            write(`${this.outputDir}/${name}/lib${modIdx}/index.ts`, `// Generated source file (${this.style}-${Date.now()})\n` + tsFileAcc.map(
                 (s, idx) => `import {a as val${idx}} from './${s.replace('.ts', '')}'`).join('\n'));
 
             // Write a BUILD file to build the lib
@@ -117,7 +117,7 @@ ${this._ts_attributes()}
             }
         }
 
-        write(`${this.outputDir}/${name}/index.ts`, `// Generated source file (${Date.now()})\n` + featureModuleDeps.map(f => f.split("/").pop()).map(f => `import {} from './${f}'`).join("\n"))
+        write(`${this.outputDir}/${name}/index.ts`, `// Generated source file (${this.style}-${Date.now()})\n` + featureModuleDeps.map(f => f.split("/").pop()).map(f => `import {} from './${f}'`).join("\n"))
 
         // Write a BUILD file to build the feature
         if (this.style != 'tsc') {
