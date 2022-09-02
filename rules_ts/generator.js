@@ -65,8 +65,9 @@ class Generator {
     generate() {
         const rootDeps = []
         for (let i=0; i<this.numFeatures; ++i) {
-            this.generateFeature(featureNames[i])
-            rootDeps.push(`//${this.outputDir}/${featureNames[i]}`)
+            const name = `${featureNames[i%10]}${Math.floor(i/10)}`
+            this.generateFeature(name)
+            rootDeps.push(`//${this.outputDir}/${name}`)
         }
 
         if (this.style != 'tsc') {
@@ -159,7 +160,7 @@ ${this._ts_attributes()}
                 return [
                     'load("@aspect_rules_ts//ts:defs.bzl", "ts_project")',
                     'load("@aspect_rules_js//js:defs.bzl", "js_library")',
-                    'load("@aspect_rules_swc//swc:defs.bzl", "swc_transpiler")',
+                    'load("//:swc_transpiler.bzl", "swc_transpiler")',
                 ].join("\n")
 
             case 'ts_project_rules_nodejs':
@@ -171,7 +172,7 @@ ${this._ts_attributes()}
             case 'ts_project_rules_nodejs_swc':
                 return [
                     'load("@npm//@bazel/typescript:index.bzl", "ts_project")',
-                    'load("@aspect_rules_swc//swc:defs.bzl", "swc_transpiler")',
+                    'load("//:swc_transpiler.bzl", "swc_transpiler")',
                 ].join("\n")
 
             case 'ts_library':
@@ -179,7 +180,7 @@ ${this._ts_attributes()}
                 return [
                     'load("@npm_tslibrary//@bazel/concatjs:index.bzl", ts_project = "ts_library")',
                     'load("@npm_tslibrary//@bazel/concatjs:index.bzl", js_library = "ts_library")',
-                    'load("@aspect_rules_swc//swc:defs.bzl", "swc_transpiler")',
+                    'load("//:swc_transpiler.bzl", "swc_transpiler")',
                 ].join("\n")
 
             default:

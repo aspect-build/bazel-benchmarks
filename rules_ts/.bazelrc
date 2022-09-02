@@ -1,6 +1,6 @@
 build --announce_rc
 
-build --worker_max_instances=8
+build --worker_max_instances=16
 
 # In general, the rules in this repository assume that runfiles
 # are enabled as we do not support no runfiles case.
@@ -43,14 +43,13 @@ build --grpc_keepalive_time=30s
 
 # Generic remote build execution
 build:rbe --extra_execution_platforms=@aspect_rules_js//platforms:x86_64_linux_remote
+build:rbe --host_platform=@local_config_platform//:host
 build:rbe --genrule_strategy=remote
-build:rbe --host_platform=@aspect_rules_js//platforms:x86_64_linux_remote
 build:rbe --jobs=100
 
 # EngFlow remote cache
 build:rbe --bes_backend=grpcs://tourmaline.cluster.engflow.com
 build:rbe --bes_results_url=https://tourmaline.cluster.engflow.com/invocation/
-build:rbe --remote_cache=grpcs://tourmaline.cluster.engflow.com
 
 # EngFlow remote build execution
 build:rbe --remote_executor=grpcs://tourmaline.cluster.engflow.com

@@ -44,3 +44,9 @@ jobs:
                   XDG_CACHE_HOME: ~/.cache/bazel-repo
               working-directory: ${{ matrix.folder }}
               run: ./run_benchmarks.sh
+            - name: Run benchmarks Again
+              env:
+                  # Bazelisk will download bazel to here, ensure it is cached between runs.
+                  XDG_CACHE_HOME: ~/.cache/bazel-repo
+              working-directory: ${{ matrix.folder }}
+              run: ./run_benchmarks.sh
